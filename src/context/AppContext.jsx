@@ -204,7 +204,7 @@ export const AppProvider = ({ children }) => {
     try {
       const { data } = await api.patch(`/tasks/${id}/complete`);
       const pts = data.data;
-      if (pts) setPointsData(p => ({ ...p, totalXP: p.totalXP + (newCompleted ? (task.priority === 'High' ? 30 : task.priority === 'Medium' ? 20 : 10) : 0) }));
+      if (pts) setPointsData(p => ({ ...p, totalXP: p.totalXP + (newCompleted ? 1 : -1) }));
     } catch {
       // Revert on failure
       setTasks(prev => prev.map(t => t.id === id ? task : t));

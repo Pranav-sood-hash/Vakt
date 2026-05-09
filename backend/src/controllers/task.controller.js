@@ -1,7 +1,7 @@
 const prisma = require('../prisma');
 const { successResponse, errorResponse } = require('../utils/response.utils');
 
-const XP_MAP = { High: 30, Medium: 20, Low: 10 };
+const XP_MAP = { High: 1, Medium: 1, Low: 1 };
 
 exports.getTasks = async (req, res, next) => {
   try {
@@ -55,7 +55,7 @@ exports.completeTask = async (req, res, next) => {
     if (!task) return errorResponse(res, 'NOT_FOUND', 'Task not found', 404);
 
     const wasCompleted = task.status === 'COMPLETED';
-    const xp = XP_MAP[task.priority] || 20;
+    const xp = 1; // Award exactly 1 point as requested
 
     const updatedTask = await prisma.task.update({
       where: { id: task.id },
