@@ -1,0 +1,173 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id                String    @id @default(uuid())
+  fullName          String
+  username          String    @unique
+  email             String    @unique
+  passwordHash      String
+  avatarUrl         String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  lastActiveDate    DateTime?
+  refreshToken      String?
+  resetOtp          String?
+  resetOtpExpiry    DateTime?
+  
+  // Edit Profile Fields
+  emailOTP          String?
+  emailOTPExpiry    DateTime?
+  emailOTPNewEmail  String?
+  passwordOTP       String?
+  passwordOTPExpiry DateTime?
+  passwordOTPNew    String?
+
+  tasks             Task[]
+  timetableSlots    TimetableSlot[]
+  focusSessions     FocusSession[]
+  points            UserPoints?
+  settings          UserSettings?
+  notifications     Notification[]
+  activityLog       ActivityLog[]
+  achievements      UserAchievement[]
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  userId      String
+  name        String
+  description String   @default("")
+  priority    String   @default("Medium")
+  status      String   @default("PENDING")
+  dueDateTime DateTime
+  completedAt DateTime?
+  xpAwarded   Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model TimetableSlot {
+  id          String    @id @default(uuid())
+  userId      String
+  name        String
+  description String   @default("")
+  start       String
+  durationMin Int
+  priority    String   @default("Medium")
+  status      String   @default("PENDING")
+  date        DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model FocusSession {
+  id            String    @id @default(uuid())
+  userId        String
+  taskId        String?
+  durationMin   Int
+  completedAt   DateTime  @default(now())
+  xpAwarded     Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model UserPoints {
+  id              String    @id @default(uuid())
+  userId          String    @unique
+  totalXP         Int       @default(0)
+  currentRank     String    @default("Bronze I")
+  rankLevel       Int       @default(1)
+  streak          Int       @default(0)
+  longestStreak   Int       @default(0)
+  tasksCompleted  Int       @default(0)
+  tasksMissed     Int       @default(0)
+  totalFocusMin   Int       @default(0)
+  weeklyXP        Int       @default(0)
+  lastStreakDate  DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserSettings {
+  id                  String  @id @default(uuid())
+  userId              String  @unique
+  darkMode            Boolean @default(false)
+  accentColor         String  @default("#2D4FD6")
+  fontSize            Int     @default(14)
+  taskReminders       Boolean @default(true)
+  dailyReminder       Boolean @default(true)
+  rankNotifications   Boolean @default(true)
+  soundAlerts         Boolean @default(true)
+  reminderMinutes     Int     @default(15)
+  startOfDay          String  @default("06:00")
+  autoDeleteExpired   Boolean @default(true)
+  dailyGoalHours      Int     @default(8)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  user                User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String    @id @default(uuid())
+  userId    String
+  type      String    @default("info")
+  title     String
+  message   String
+  isRead    Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model ActivityLog {
+  id        String    @id @default(uuid())
+  userId    String
+  type      String    @default("ACHIEVEMENT")
+  title     String
+  detail    String    @default("")
+  xpDelta   Int       @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model UserAchievement {
+  id             String    @id @default(uuid())
+  userId         String
+  achievementKey String
+  unlockedAt     DateTime  @default(now())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementKey])
+  @@index([userId])
+}

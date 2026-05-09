@@ -1,0 +1,24 @@
+module.exports = {
+  RANK_THRESHOLDS: {
+    BRONZE_I: 0,
+    BRONZE_II: 100,
+    BRONZE_III: 250,
+    SILVER_I: 500,
+    SILVER_II: 800,
+    SILVER_III: 1200,
+    GOLD: 1800,
+    PLATINUM: 2600,
+    DIAMOND: 3600,
+    EMERALD: 5000,
+    ULTRA_DISCIPLINED: 7000
+  },
+  XP_VALUES: {
+    TASK_LOW: 5,
+    TASK_MEDIUM: 10,
+    TASK_HIGH: 20,
+    SLOT_ADDED: 2,
+    FOCUS_PER_HOUR: 15,
+    MISSED_TASK_PENALTY: 5,
+    RANK_UP_BONUS: 50
+  }
+};
