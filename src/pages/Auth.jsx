@@ -136,7 +136,12 @@ const Auth = () => {
                   await signup(formData);
               }
           } catch (err) {
-              const msg = err?.response?.data?.message || 'Something went wrong. Please try again.';
+              let msg = 'Something went wrong. Please try again.';
+              if (err.response) {
+                  msg = err.response.data?.message || msg;
+              } else if (err.request) {
+                  msg = 'Connection failed. Please ensure the backend server is running.';
+              }
               setAuthError(msg);
           }
       }
