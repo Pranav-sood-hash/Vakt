@@ -23,7 +23,10 @@ const defaultPoints = { totalXP: 0, currentRank: 'Bronze I', streak: 0, lastStre
 export const AppProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('vakt_access_token'));
   const [profile, setProfile] = useState(null);
-  const [settings, setSettings] = useState(defaultSettings);
+  const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem('vakt_dark_mode');
+    return { ...defaultSettings, darkMode: saved === 'true' };
+  });
   const [tasks, setTasks] = useState([]);
   const [timetable, setTimetable] = useState([]);
   const [pointsData, setPointsData] = useState(defaultPoints);
@@ -37,9 +40,19 @@ export const AppProvider = ({ children }) => {
 
   // ─── Helpers ────────────────────────────────────────────────────────────────
   const applyDarkMode = (isDark) => {
-    if (isDark) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('vakt_dark_mode', 'true');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('vakt_dark_mode', 'false');
+    }
   };
+
+  // Sync dark mode on mount
+  useEffect(() => {
+    applyDarkMode(settings.darkMode);
+  }, []);
 
   // ─── Load all data after auth ────────────────────────────────────────────────
   const loadAll = useCallback(async () => {
@@ -161,6 +174,8 @@ export const AppProvider = ({ children }) => {
     setNotifications([]);
     setActivity([]);
     setSettings(defaultSettings);
+    // Don't clear dark mode from localStorage on logout if we want to keep the preference
+    // but we reset the state to default
     applyDarkMode(false);
   };
 

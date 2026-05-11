@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, createRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Mail, Shield, Lock, Eye, EyeOff, CheckCircle2, ArrowLeft, Loader2, RefreshCw, AlertCircle } from 'lucide-react';
+import { Mail, Shield, Lock, Eye, EyeOff, CheckCircle2, ArrowLeft, Loader2, RefreshCw, AlertCircle, Sun, Moon } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import clsx from 'clsx';
 import axios from 'axios';
@@ -73,7 +73,7 @@ const StepIndicator = ({ stepNumber, label, isActive, isCompleted, icon: Icon, i
 };
 
 const ForgotPassword = () => {
-  const { settings } = useAppContext();
+  const { settings, toggleDarkMode } = useAppContext();
   const navigate = useNavigate();
   const isDark = settings.darkMode;
 
@@ -267,6 +267,13 @@ const ForgotPassword = () => {
          style={{ backgroundColor: isDark ? '#1E2028' : '#F0F2FA' }}>
       
       <BackgroundDecoration isDark={isDark} />
+
+      <button 
+          onClick={toggleDarkMode} 
+          className="absolute top-6 right-6 z-20 p-2 rounded-full bg-white/50 dark:bg-black/20 text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-black/40 backdrop-blur-sm transition-all"
+      >
+          {isDark ? <Sun size={20} /> : <Moon size={20} />}
+      </button>
 
       <div className="z-10 w-full px-4 flex flex-col items-center">
         
