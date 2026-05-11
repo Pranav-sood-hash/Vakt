@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
@@ -17,9 +18,10 @@ model User {
   updatedAt         DateTime  @updatedAt
   lastActiveDate    DateTime?
   refreshToken      String?
-  resetOtp          String?
-  resetOtpExpiry    DateTime?
-  
+  passwordResetOTP       String?
+  passwordResetOTPExpiry DateTime?
+  passwordResetToken     String?
+
   // Edit Profile Fields
   emailOTP          String?
   emailOTPExpiry    DateTime?

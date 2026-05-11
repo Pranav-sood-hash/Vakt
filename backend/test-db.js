@@ -1,12 +1,14 @@
-const mongoose = require('mongoose');
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+const prisma = require('./src/prisma');
 
 const test = async () => {
     try {
-        console.log('Attempting to connect to:', process.env.MONGO_URI);
-        await mongoose.connect(process.env.MONGO_URI);
-        console.log('SUCCESS: Connected to MongoDB Atlas');
+        console.log('Attempting to connect to SQLite via Prisma...');
+        await prisma.$connect();
+        console.log('SUCCESS: Connected to SQLite Database');
+        
+        const userCount = await prisma.user.count();
+        console.log(`Current user count: ${userCount}`);
+        
         process.exit(0);
     } catch (err) {
         console.error('FAILURE:', err.message);

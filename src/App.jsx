@@ -14,6 +14,7 @@ import Settings from './pages/Settings';
 import Auth from './pages/Auth';
 import Notifications from './pages/Notifications';
 import EditProfile from './pages/EditProfile';
+import ForgotPassword from './pages/ForgotPassword';
 
 function AppContent() {
   const { isAuthenticated, loading } = useAppContext();
@@ -31,7 +32,12 @@ function AppContent() {
   }
 
   if (!isAuthenticated) {
-    return <Auth />;
+    return (
+      <Routes>
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="*" element={<Auth />} />
+      </Routes>
+    );
   }
 
   return (

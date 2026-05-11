@@ -75,8 +75,95 @@ const sendPasswordChangeOTP = async (toEmail, userName, otp) => {
   });
 };
 
+// Send Forgot Password OTP
+const sendForgotPasswordOTP = async (toEmail, userName, otp) => {
+  await transporter.sendMail({
+    from: `"Vakt App" <${process.env.SMTP_USER}>`,
+    to: toEmail,
+    subject: 'Vakt — Password Reset Verification Code',
+    html: `
+      <div style="font-family: sans-serif; max-width: 560px; margin: auto; padding: 40px; background: #f5f6fa; border-radius: 16px;">
+        <div style="text-align: center; margin-bottom: 32px;">
+          <h1 style="color: #2D4FD6; font-size: 36px; font-weight: bold; margin: 0;">Vakt</h1>
+          <p style="color: #666; margin: 8px 0 0;">Stay Disciplined</p>
+        </div>
+        
+        <div style="background: white; padding: 32px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+          <h2 style="color: #1a1a2e; font-size: 24px; margin-top: 0;">Password Reset Request</h2>
+          <p style="color: #444; line-height: 1.6; font-size: 16px;">
+            Hi <strong>${userName}</strong>, we received a request to reset your Vakt password.
+          </p>
+          
+          <div style="background: #f0f2fa; border-radius: 12px; padding: 32px; text-align: center; margin: 32px 0;">
+            <p style="color: #666; font-size: 14px; margin: 0 0 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: bold;">Verification Code</p>
+            <h1 style="color: #2D4FD6; font-size: 42px; letter-spacing: 12px; margin: 0; font-family: monospace;">${otp}</h1>
+          </div>
+          
+          <p style="color: #666; font-size: 14px; margin-bottom: 24px;">This code expires in <strong>10 minutes</strong>.</p>
+          
+          <div style="background: #fff5f5; border-left: 4px solid #e53935; padding: 16px; margin-bottom: 24px;">
+            <p style="color: #c62828; font-size: 14px; margin: 0; font-weight: bold;">
+              ⚠️ If you didn't request this, your account may be at risk. Secure it immediately.
+            </p>
+          </div>
+        </div>
+        
+        <p style="color: #aaa; font-size: 12px; text-align: center; margin-top: 32px;">
+          © 2024 Vakt · Stay Disciplined
+        </p>
+      </div>
+    `
+  });
+};
+
+// Send Password Reset Success
+const sendPasswordResetSuccess = async (toEmail, userName) => {
+  const timestamp = new Date().toLocaleString('en-US', { 
+    timeZone: 'Asia/Kolkata',
+    dateStyle: 'full',
+    timeStyle: 'medium'
+  });
+  
+  await transporter.sendMail({
+    from: `"Vakt App" <${process.env.SMTP_USER}>`,
+    to: toEmail,
+    subject: 'Vakt — Your Password Was Successfully Reset',
+    html: `
+      <div style="font-family: sans-serif; max-width: 560px; margin: auto; padding: 40px; background: #f5f6fa; border-radius: 16px;">
+        <div style="text-align: center; margin-bottom: 32px;">
+          <h1 style="color: #2D4FD6; font-size: 36px; font-weight: bold; margin: 0;">Vakt</h1>
+          <p style="color: #666; margin: 8px 0 0;">Stay Disciplined</p>
+        </div>
+        
+        <div style="background: white; padding: 32px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 6px solid #4caf50;">
+          <h2 style="color: #1a1a2e; font-size: 24px; margin-top: 0;">Password Reset Successful</h2>
+          <p style="color: #444; line-height: 1.6; font-size: 16px;">
+            Hi <strong>${userName}</strong>, your Vakt account password was successfully changed.
+          </p>
+          
+          <div style="background: #f8f9fa; border-radius: 8px; padding: 16px; margin: 24px 0;">
+            <p style="color: #666; font-size: 14px; margin: 0;">
+              <strong>Changed at:</strong> ${timestamp}
+            </p>
+          </div>
+          
+          <p style="color: #e53935; font-size: 14px; font-weight: bold; margin-top: 24px;">
+            ⚠️ If you did not make this change, contact support immediately.
+          </p>
+        </div>
+        
+        <p style="color: #aaa; font-size: 12px; text-align: center; margin-top: 32px;">
+          © 2024 Vakt · Stay Disciplined
+        </p>
+      </div>
+    `
+  });
+};
+
 module.exports = {
   generateOTP,
   sendEmailChangeOTP,
-  sendPasswordChangeOTP
+  sendPasswordChangeOTP,
+  sendForgotPasswordOTP,
+  sendPasswordResetSuccess
 };

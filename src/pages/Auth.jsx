@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { Mail, Lock, Eye, EyeOff, CheckCircle2, User, AtSign, ArrowRight, ShieldCheck, Moon, Sun } from 'lucide-react';
 import clsx from 'clsx';
@@ -55,9 +56,11 @@ const DoubleCheckIcon = ({size}) => (
 
 const Auth = () => {
   const { login, signup, settings, toggleDarkMode } = useAppContext();
+  const location = useLocation();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   
   // Form State
   const [formData, setFormData] = useState({
@@ -69,6 +72,15 @@ const Auth = () => {
     rememberMe: false,
     agreeTerms: false
   });
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMsg(location.state.message);
+      if (location.state.email) {
+        setFormData(prev => ({ ...prev, email: location.state.email }));
+      }
+    }
+  }, [location.state]);
   
   const [errors, setErrors] = useState({});
 
@@ -189,6 +201,7 @@ const Auth = () => {
                 </div>
 
                 {authError && <div className="mb-4 text-red-500 text-sm font-bold text-center bg-red-500/10 py-2 rounded-lg">{authError}</div>}
+                {successMsg && <div className="mb-4 text-green-500 text-sm font-bold text-center bg-green-500/10 py-2 rounded-lg">{successMsg}</div>}
 
                 <form onSubmit={handleSubmit} className="space-y-5">
                     
@@ -350,7 +363,7 @@ const Auth = () => {
                                 />
                                 <span className="text-sm font-medium transition-colors" style={{ color: settings.darkMode ? '#8B94A6' : '#6B7280' }}>Remember Me</span>
                             </label>
-                            <a href="#" className="text-sm font-bold text-[#2D4FD6] hover:underline">Forgot Password?</a>
+                            <Link to="/forgot-password" size={14} className="text-sm font-bold text-[#2D4FD6] hover:underline">Forgot Password?</Link>
                         </div>
                     ) : (
                         <div className="mt-2">

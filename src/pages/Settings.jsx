@@ -76,7 +76,7 @@ const Settings = () => {
                                       "w-8 h-8 rounded-full flex items-center justify-center transition-transform",
                                       settings.accentColor === color ? "scale-110 ring-2 ring-offset-2 ring-offset-bgLight dark:ring-offset-bgDark" : "hover:scale-110"
                                   )}
-                                  style={{ backgroundColor: color, ringColor: color }}
+                                  style={{ backgroundColor: color }}
                               >
                                   {settings.accentColor === color && <div className="w-2 h-2 bg-white rounded-full"></div>}
                               </button>
@@ -136,8 +136,8 @@ const Settings = () => {
                           <label className="block font-bold mb-1">Default Reminder Time</label>
                           <select 
                               className="w-full bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-borderDark rounded-xl px-4 py-2 focus:outline-none focus:border-primary"
-                              value={settings.reminderTime}
-                              onChange={(e) => updateSetting('reminderTime', Number(e.target.value))}
+                              value={settings.reminderMinutes}
+                              onChange={(e) => updateSetting('reminderMinutes', Number(e.target.value))}
                           >
                               <option value={5}>5 mins before</option>
                               <option value={10}>10 mins before</option>

@@ -184,7 +184,7 @@ export const AppProvider = ({ children }) => {
     const { data } = await api.post('/tasks', taskData);
     const t = data.data;
     const normalised = {
-      id: t._id, name: t.name, priority: t.priority,
+      id: t.id, name: t.name, priority: t.priority,
       dueDateTime: t.dueDateTime, completed: false,
       completedAt: null, createdAt: t.createdAt,
     };
@@ -223,7 +223,7 @@ export const AppProvider = ({ children }) => {
     const { data } = await api.post('/timetable', slotData);
     const s = data.data;
     const norm = {
-      id: s._id, name: s.name, start: s.start, duration: s.durationMin,
+      id: s.id, name: s.name, start: s.start, duration: s.durationMin,
       priority: s.priority, desc: s.description, date: s.date, completed: false,
     };
     setTimetable(prev => [...prev, norm]);
@@ -232,7 +232,7 @@ export const AppProvider = ({ children }) => {
     const [h, m] = slotData.start.split(':');
     slotDate.setHours(parseInt(h), parseInt(m), 0, 0);
     const mirroredTask = {
-      id: s._id + '_task', name: s.name, priority: s.priority || 'Medium',
+      id: s.id + '_task', name: s.name, priority: s.priority || 'Medium',
       dueDateTime: slotDate.toISOString(), completed: false, completedAt: null,
       createdAt: new Date().toISOString(),
     };

@@ -137,39 +137,104 @@ exports.refresh = async (req, res, next) => {
   }
 };
 
+const { generateOTP, sendForgotPasswordOTP, sendPasswordResetSuccess } = require('../services/email.service');
+
 exports.forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
     const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
-    if (!user) return errorResponse(res, 'NOT_FOUND', 'User with this email does not exist', 404);
+    
+    if (!user) {
+      return errorResponse(res, 'NOT_FOUND', 'No account found with this email address', 404);
+    }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = generateOTP();
+    const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS || '12', 10);
+    const hashedOtp = await bcrypt.hash(otp, saltRounds);
+
     await prisma.user.update({
       where: { id: user.id },
       data: {
-        resetOtp: otp,
-        resetOtpExpiry: new Date(Date.now() + 10 * 60 * 1000) // 10 min
+        passwordResetOTP: hashedOtp,
+        passwordResetOTPExpiry: new Date(Date.now() + 10 * 60 * 1000) // 10 min
       }
     });
 
-    // Nodemailer integration would go here
-    console.log(`OTP for ${email}: ${otp}`);
+    await sendForgotPasswordOTP(user.email, user.fullName, otp);
 
-    return successResponse(res, null, 'OTP sent to email');
+    return successResponse(res, null, 'Verification code sent to email');
+  } catch (error) { next(error); }
+};
+
+exports.verifyResetOTP = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+    const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
+
+    if (!user || !user.passwordResetOTP || !user.passwordResetOTPExpiry) {
+      return errorResponse(res, 'INVALID_OTP', 'Invalid verification code', 400);
+    }
+
+    if (new Date() > user.passwordResetOTPExpiry) {
+      return errorResponse(res, 'EXPIRED_OTP', 'Code expired. Please request a new one.', 400);
+    }
+
+    const isMatch = await bcrypt.compare(otp, user.passwordResetOTP);
+    if (!isMatch) {
+      return errorResponse(res, 'INVALID_OTP', 'Invalid verification code', 400);
+    }
+
+    // Generate short-lived reset token (JWT, 15min)
+    const resetToken = jwt.sign(
+      { userId: user.id, purpose: 'reset' }, 
+      process.env.JWT_RESET_SECRET, 
+      { expiresIn: '15m' }
+    );
+
+    const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS || '12', 10);
+    const hashedResetToken = await bcrypt.hash(resetToken, saltRounds);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        passwordResetToken: hashedResetToken,
+        passwordResetOTP: null,
+        passwordResetOTPExpiry: null
+      }
+    });
+
+    return successResponse(res, { resetToken }, 'OTP verified successfully');
   } catch (error) { next(error); }
 };
 
 exports.resetPassword = async (req, res, next) => {
   try {
-    const { email, otp, newPassword } = req.body;
-    const user = await prisma.user.findFirst({
-      where: {
-        email: email.toLowerCase(),
-        resetOtp: otp,
-        resetOtpExpiry: { gt: new Date() }
-      }
-    });
-    if (!user) return errorResponse(res, 'INVALID_OTP', 'Invalid or expired OTP', 400);
+    const { resetToken, newPassword, confirmPassword } = req.body;
+
+    if (newPassword !== confirmPassword) {
+      return errorResponse(res, 'VALIDATION_ERROR', 'Passwords do not match', 400);
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(resetToken, process.env.JWT_RESET_SECRET);
+    } catch (err) {
+      return errorResponse(res, 'SESSION_EXPIRED', 'Session expired. Please start over.', 401);
+    }
+
+    if (decoded.purpose !== 'reset') {
+      return errorResponse(res, 'INVALID_TOKEN', 'Invalid reset token', 401);
+    }
+
+    const user = await prisma.user.findUnique({ where: { id: decoded.userId } });
+    if (!user || !user.passwordResetToken) {
+      return errorResponse(res, 'SESSION_EXPIRED', 'Session expired. Please start over.', 401);
+    }
+
+    const isTokenMatch = await bcrypt.compare(resetToken, user.passwordResetToken);
+    if (!isTokenMatch) {
+      return errorResponse(res, 'INVALID_TOKEN', 'Invalid or already used reset token', 401);
+    }
 
     const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS || '12', 10);
     const passwordHash = await bcrypt.hash(newPassword, saltRounds);
@@ -178,11 +243,22 @@ exports.resetPassword = async (req, res, next) => {
       where: { id: user.id },
       data: {
         passwordHash,
-        resetOtp: null,
-        resetOtpExpiry: null
+        passwordResetToken: null,
+        refreshToken: null // Invalidate all active sessions
       }
     });
 
-    return successResponse(res, null, 'Password reset successful');
+    await prisma.activityLog.create({
+      data: {
+        userId: user.id,
+        type: 'SECURITY',
+        title: 'Password Reset',
+        detail: 'Password reset via email'
+      }
+    });
+
+    await sendPasswordResetSuccess(user.email, user.fullName);
+
+    return successResponse(res, null, 'Password updated successfully');
   } catch (error) { next(error); }
 };
