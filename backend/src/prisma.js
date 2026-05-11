@@ -11,10 +11,12 @@ const url = process.env.DATABASE_URL || 'file:./prisma/dev.db';
 
 // Ensure the URL is in the format expected by better-sqlite3 (remove 'file:' prefix if present)
 const dbPath = url.startsWith('file:') ? url.replace('file:', '') : url;
-const absoluteDbPath = path.isAbsolute(dbPath) ? dbPath : path.join(__dirname, '..', dbPath);
+// Prisma 7 uses a new config system. For driver adapters like better-sqlite3,
+// we pass the config object (with url) to the adapter.
+const adapter = new PrismaBetterSqlite3({
+  url: url
+});
 
-const db = new Database(absoluteDbPath);
-const adapter = new PrismaBetterSqlite3(db);
 const prisma = new PrismaClient({ adapter });
 
 module.exports = prisma;
