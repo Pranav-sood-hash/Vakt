@@ -175,7 +175,7 @@ const Auth = () => {
       <div className="z-10 w-full px-4 flex flex-col items-center">
           
         <div className="mb-6 flex flex-col items-center">
-            <div className="w-14 h-14 bg-[#2D4FD6] rounded-2xl flex items-center justify-center text-white font-bold shadow-lg shadow-[#2D4FD6]/30 mb-3 relative">
+            <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center text-white font-bold shadow-lg shadow-primary/30 mb-3 relative">
                 <CheckCircle2 size={32} strokeWidth={2.5} />
             </div>
             <h1 className="text-2xl font-black tracking-tight" style={{ color: settings.darkMode ? '#FFFFFF' : '#1A1A2E' }}>Vakt</h1>
@@ -222,7 +222,7 @@ const Auth = () => {
                                         placeholder="John Doe"
                                         className={clsx(
                                             "w-full pl-11 pr-4 py-3 rounded-xl focus:outline-none transition-all",
-                                            settings.darkMode ? "bg-[#2E3240] text-white focus:border-[#2D4FD6]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-[#2D4FD6]/20",
+                                            settings.darkMode ? "bg-[#2E3240] text-white focus:border-primary" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-primary/20",
                                             errors.fullName ? "border-red-500 ring-1 ring-red-500" : (settings.darkMode ? "border border-[#3A3F50]" : "")
                                         )}
                                     />
@@ -242,7 +242,7 @@ const Auth = () => {
                                         placeholder="johndoe_stoic"
                                         className={clsx(
                                             "w-full pl-11 pr-4 py-3 rounded-xl focus:outline-none transition-all",
-                                            settings.darkMode ? "bg-[#2E3240] text-white focus:border-[#2D4FD6]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-[#2D4FD6]/20",
+                                            settings.darkMode ? "bg-[#2E3240] text-white focus:border-primary" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-primary/20",
                                             errors.username ? "border-red-500 ring-1 ring-red-500" : (settings.darkMode ? "border border-[#3A3F50]" : "")
                                         )}
                                     />
@@ -265,7 +265,7 @@ const Auth = () => {
                                 placeholder="name@company.com"
                                 className={clsx(
                                     "w-full pl-11 pr-4 py-3 rounded-xl focus:outline-none transition-all",
-                                    settings.darkMode ? "bg-[#2E3240] text-white focus:border-[#2D4FD6]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-[#2D4FD6]/20",
+                                    settings.darkMode ? "bg-[#2E3240] text-white focus:border-primary" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-primary/20",
                                     errors.email ? "border-red-500 ring-1 ring-red-500" : (settings.darkMode ? "border border-[#3A3F50]" : "")
                                 )}
                             />
@@ -286,7 +286,7 @@ const Auth = () => {
                                 placeholder="••••••••"
                                 className={clsx(
                                     "w-full pl-11 pr-11 py-3 rounded-xl focus:outline-none transition-all",
-                                    settings.darkMode ? "bg-[#2E3240] text-white focus:border-[#2D4FD6]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-[#2D4FD6]/20",
+                                    settings.darkMode ? "bg-[#2E3240] text-white focus:border-primary" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-primary/20",
                                     errors.password ? "border-red-500 ring-1 ring-red-500" : (settings.darkMode ? "border border-[#3A3F50]" : "")
                                 )}
                             />
@@ -308,7 +308,7 @@ const Auth = () => {
                                             className={clsx(
                                                 "h-full flex-1 rounded-full transition-colors",
                                                 passStrength >= num 
-                                                    ? (passStrength === 1 ? "bg-red-500" : passStrength === 2 ? "bg-orange-500" : "bg-[#2D4FD6]")
+                                                    ? (passStrength === 1 ? "bg-red-500" : passStrength === 2 ? "bg-orange-500" : "bg-primary")
                                                     : "bg-gray-200 dark:bg-[#3A3F50]"
                                             )}
                                         ></div>
@@ -317,7 +317,7 @@ const Auth = () => {
                                 <span className={clsx("text-xs font-bold w-12 text-right", 
                                     passStrength === 1 ? "text-red-500" : 
                                     passStrength === 2 ? "text-orange-500" : 
-                                    passStrength >= 3 ? "text-[#2D4FD6]" : "text-gray-400"
+                                    passStrength >= 3 ? "text-primary" : "text-gray-400"
                                 )}>
                                     {passStrength === 1 && 'WEAK'}
                                     {passStrength === 2 && 'FAIR'}
@@ -343,7 +343,7 @@ const Auth = () => {
                                     placeholder="••••••••"
                                     className={clsx(
                                         "w-full pl-11 pr-4 py-3 rounded-xl focus:outline-none transition-all",
-                                        settings.darkMode ? "bg-[#2E3240] text-white focus:border-[#2D4FD6]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-[#2D4FD6]/20",
+                                        settings.darkMode ? "bg-[#2E3240] text-white focus:border-primary" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-primary/20",
                                         errors.confirmPassword ? "border-red-500 ring-1 ring-red-500" : (settings.darkMode ? "border border-[#3A3F50]" : "")
                                     )}
                                 />
@@ -359,11 +359,11 @@ const Auth = () => {
                                     name="rememberMe"
                                     checked={formData.rememberMe}
                                     onChange={handleInputChange}
-                                    className="w-4 h-4 rounded text-[#2D4FD6] focus:ring-[#2D4FD6] border-gray-300 dark:border-gray-600 bg-transparent"
+                                    className="w-4 h-4 rounded text-primary focus:ring-primary border-gray-300 dark:border-gray-600 bg-transparent"
                                 />
                                 <span className="text-sm font-medium transition-colors" style={{ color: settings.darkMode ? '#8B94A6' : '#6B7280' }}>Remember Me</span>
                             </label>
-                            <Link to="/forgot-password" size={14} className="text-sm font-bold text-[#2D4FD6] hover:underline">Forgot Password?</Link>
+                            <Link to="/forgot-password" size={14} className="text-sm font-bold text-primary hover:underline">Forgot Password?</Link>
                         </div>
                     ) : (
                         <div className="mt-2">
@@ -374,12 +374,12 @@ const Auth = () => {
                                     checked={formData.agreeTerms}
                                     onChange={handleInputChange}
                                     className={clsx(
-                                        "mt-0.5 w-4 h-4 rounded text-[#2D4FD6] focus:ring-[#2D4FD6] bg-transparent",
+                                        "mt-0.5 w-4 h-4 rounded text-primary focus:ring-primary bg-transparent",
                                         errors.agreeTerms ? "border-red-500 ring-1 ring-red-500" : "border-gray-300 dark:border-gray-600"
                                     )}
                                 />
                                 <span className="text-sm font-medium leading-tight" style={{ color: settings.darkMode ? '#8B94A6' : '#6B7280' }}>
-                                    I agree to the <a href="#" className="text-[#2D4FD6] hover:underline">Terms of Service</a> and <a href="#" className="text-[#2D4FD6] hover:underline">Privacy Policy</a>
+                                    I agree to the <a href="#" className="text-primary hover:underline">Terms of Service</a> and <a href="#" className="text-primary hover:underline">Privacy Policy</a>
                                 </span>
                             </label>
                         </div>
@@ -387,7 +387,7 @@ const Auth = () => {
 
                     <button 
                         type="submit" 
-                        className="w-full bg-[#2D4FD6] hover:bg-[#2442B5] text-white rounded-xl py-3.5 font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98] mt-6"
+                        className="w-full bg-primary hover:opacity-90 text-white rounded-xl py-3.5 font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98] mt-6"
                     >
                         {isLogin ? 'Login' : 'Signup'}
                         <ArrowRight size={18} />
@@ -403,9 +403,9 @@ const Auth = () => {
                 }}
             >
                 {isLogin ? (
-                    <>Don't have an account yet? <button onClick={() => setIsLogin(false)} className="text-[#2D4FD6] font-bold hover:underline">Sign up for Vakt</button></>
+                    <>Don't have an account yet? <button onClick={() => setIsLogin(false)} className="text-primary font-bold hover:underline">Sign up for Vakt</button></>
                 ) : (
-                    <>Already have an account? <button onClick={() => setIsLogin(true)} className="text-[#2D4FD6] font-bold hover:underline">Login</button></>
+                    <>Already have an account? <button onClick={() => setIsLogin(true)} className="text-primary font-bold hover:underline">Login</button></>
                 )}
             </div>
         </div>

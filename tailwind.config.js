@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#0052CC",
+        primary: "rgb(var(--primary-color-rgb, 45 79 214) / <alpha-value>)",
         secondary: "#7A86FF",
         warning: "#C9832A",
         bgLight: "#FAFAFA",

@@ -125,7 +125,7 @@ const Profile = () => {
                       strokeWidth={10}
                       styles={buildStyles({
                           textColor: settings.darkMode ? '#fff' : '#111',
-                          pathColor: '#3B5BDB',
+                          pathColor: settings.accentColor,
                           trailColor: settings.darkMode ? '#2A2A2A' : '#E5E7EB',
                       })}
                   />

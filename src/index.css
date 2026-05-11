@@ -5,6 +5,13 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --primary-color: #2D4FD6;
+    --primary-color-rgb: 45 79 214;
+  }
+}
+
+@layer base {
   body {
     @apply bg-[#F5F6FA] text-gray-900 font-sans antialiased transition-colors duration-300;
   }
@@ -44,7 +51,7 @@
   }
   
   .btn-primary {
-    @apply bg-primary hover:bg-blue-600 text-white font-semibold rounded-xl px-4 py-2 transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
+    @apply bg-primary hover:opacity-90 text-white font-semibold rounded-xl px-4 py-2 transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none;
   }
   
   .animate-pulse-slow {

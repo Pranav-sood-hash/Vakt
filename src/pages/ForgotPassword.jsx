@@ -54,13 +54,13 @@ const StepIndicator = ({ stepNumber, label, isActive, isCompleted, icon: Icon, i
       <div className={clsx(
         "w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 shrink-0",
         isCompleted ? "bg-green-500 text-white" : 
-        isActive ? "bg-[#2D4FD6] text-white shadow-lg shadow-[#2D4FD6]/30 scale-110" : 
+        isActive ? "bg-primary text-white shadow-lg shadow-primary/30 scale-110" : 
         "bg-gray-200 dark:bg-[#3A3F50] text-gray-500 dark:text-gray-400"
       )}>
         {isCompleted ? <CheckCircle2 size={18} /> : stepNumber}
       </div>
       <div className="flex items-center gap-2">
-        {Icon && <Icon size={16} className={isActive ? "text-[#2D4FD6]" : "text-gray-400"} />}
+        {Icon && <Icon size={16} className={isActive ? "text-primary" : "text-gray-400"} />}
         <span className={clsx(
           "font-bold text-sm tracking-wide uppercase",
           isActive ? (isDark ? "text-white" : "text-[#1A1A2E]") : "text-gray-400"
@@ -279,7 +279,7 @@ const ForgotPassword = () => {
         
         {/* Header */}
         <div className="text-center mb-8">
-            <h1 className="text-[36px] font-black tracking-tight mb-1" style={{ color: '#2D4FD6' }}>Vakt</h1>
+            <h1 className="text-[36px] font-black tracking-tight mb-1" style={{ color: 'var(--primary-color, #2D4FD6)' }}>Vakt</h1>
             <p className="text-sm font-medium" style={{ color: isDark ? '#8B94A6' : '#6B7280' }}>
               {isDark ? 'Recover your account focus' : 'Stay Disciplined'}
             </p>
@@ -330,7 +330,7 @@ const ForgotPassword = () => {
                         disabled={sendingCode}
                         className={clsx(
                           "w-full pl-11 pr-4 py-3.5 rounded-xl focus:outline-none transition-all text-sm font-medium",
-                          isDark ? "bg-[#2E3240] text-white focus:border-[#2D4FD6]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-[#2D4FD6]/20",
+                          isDark ? "bg-[#2E3240] text-white focus:border-primary" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-primary/20",
                           errors.step1 ? "border-red-500 ring-1 ring-red-500" : (isDark ? "border border-[#3A3F50]" : "")
                         )}
                       />
@@ -340,7 +340,7 @@ const ForgotPassword = () => {
                   <button 
                     type="submit" 
                     disabled={sendingCode}
-                    className="w-full bg-[#2D4FD6] hover:bg-[#2442B5] disabled:opacity-50 text-white rounded-xl py-3.5 font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+                    className="w-full bg-primary hover:opacity-90 disabled:opacity-50 text-white rounded-xl py-3.5 font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
                   >
                     {sendingCode ? <Loader2 className="animate-spin" size={20} /> : "Send Verification Code"}
                   </button>
@@ -381,7 +381,7 @@ const ForgotPassword = () => {
                         maxLength={1}
                         className={clsx(
                           "w-12 h-14 text-center text-2xl font-black rounded-xl focus:outline-none transition-all",
-                          isDark ? "bg-[#2E3240] text-white focus:border-[#2D4FD6] border-[#3A3F50]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-[#2D4FD6]/20 border-transparent",
+                          isDark ? "bg-[#2E3240] text-white focus:border-primary border-[#3A3F50]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-primary/20 border-transparent",
                           "border-2"
                         )}
                       />
@@ -393,11 +393,11 @@ const ForgotPassword = () => {
                       Didn't receive a code?
                     </p>
                     {resendTimer > 0 ? (
-                      <span className="text-[#2D4FD6] font-bold text-sm">Resend in 00:{resendTimer.toString().padStart(2, '0')}</span>
+                      <span className="text-primary font-bold text-sm">Resend in 00:{resendTimer.toString().padStart(2, '0')}</span>
                     ) : (
                       <button 
                         onClick={handleSendCode}
-                        className="text-[#2D4FD6] font-bold text-sm hover:underline flex items-center gap-1 mx-auto"
+                        className="text-primary font-bold text-sm hover:underline flex items-center gap-1 mx-auto"
                       >
                         <RefreshCw size={14} /> Resend
                       </button>
@@ -406,7 +406,7 @@ const ForgotPassword = () => {
 
                   {errors.step2 && <p className="text-red-500 text-xs font-bold text-center flex items-center justify-center gap-1"><AlertCircle size={14} /> {errors.step2}</p>}
                   {verifyingOtp && (
-                    <div className="flex items-center justify-center gap-2 text-[#2D4FD6] font-bold text-sm">
+                    <div className="flex items-center justify-center gap-2 text-primary font-bold text-sm">
                         <Loader2 className="animate-spin" size={16} /> Verifying...
                     </div>
                   )}
@@ -441,7 +441,7 @@ const ForgotPassword = () => {
                         placeholder="••••••••"
                         className={clsx(
                           "w-full pl-11 pr-11 py-3.5 rounded-xl focus:outline-none transition-all text-sm font-medium",
-                          isDark ? "bg-[#2E3240] text-white focus:border-[#2D4FD6]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-[#2D4FD6]/20",
+                          isDark ? "bg-[#2E3240] text-white focus:border-primary" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-primary/20",
                           errors.step3 && !confirmPassword ? "border-red-500 ring-1 ring-red-500" : (isDark ? "border border-[#3A3F50]" : "")
                         )}
                       />
@@ -464,7 +464,7 @@ const ForgotPassword = () => {
                                         className={clsx(
                                             "h-full flex-1 rounded-full transition-all duration-500",
                                             passStrength >= num 
-                                                ? (passStrength === 1 ? "bg-red-500" : passStrength === 2 ? "bg-orange-500" : "bg-[#2D4FD6]")
+                                                ? (passStrength === 1 ? "bg-red-500" : passStrength === 2 ? "bg-orange-500" : "bg-primary")
                                                 : "bg-gray-200 dark:bg-[#3A3F50]"
                                         )}
                                     ></div>
@@ -473,7 +473,7 @@ const ForgotPassword = () => {
                             <span className={clsx("text-[10px] font-black w-12 text-right", 
                                 passStrength === 1 ? "text-red-500" : 
                                 passStrength === 2 ? "text-orange-500" : 
-                                passStrength >= 3 ? "text-[#2D4FD6]" : "text-gray-400"
+                                passStrength >= 3 ? "text-primary" : "text-gray-400"
                             )}>
                                 {passStrength === 1 && 'WEAK'}
                                 {passStrength === 2 && 'FAIR'}
@@ -497,7 +497,7 @@ const ForgotPassword = () => {
                         placeholder="••••••••"
                         className={clsx(
                           "w-full pl-11 pr-4 py-3.5 rounded-xl focus:outline-none transition-all text-sm font-medium",
-                          isDark ? "bg-[#2E3240] text-white focus:border-[#2D4FD6]" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-[#2D4FD6]/20",
+                          isDark ? "bg-[#2E3240] text-white focus:border-primary" : "bg-[#F0F2F8] text-[#1A1A2E] focus:ring-2 focus:ring-primary/20",
                           errors.step3 && confirmPassword && newPassword !== confirmPassword ? "border-red-500 ring-1 ring-red-500" : (isDark ? "border border-[#3A3F50]" : "")
                         )}
                       />
@@ -507,7 +507,7 @@ const ForgotPassword = () => {
                   <button 
                     type="submit" 
                     disabled={resettingPassword}
-                    className="w-full bg-[#2D4FD6] hover:bg-[#2442B5] disabled:opacity-50 text-white rounded-xl py-3.5 font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98] mt-4"
+                    className="w-full bg-primary hover:opacity-90 disabled:opacity-50 text-white rounded-xl py-3.5 font-bold flex items-center justify-center gap-2 transition-all active:scale-[0.98] mt-4"
                   >
                     {resettingPassword ? <Loader2 className="animate-spin" size={20} /> : "Update Password"}
                   </button>
@@ -523,8 +523,7 @@ const ForgotPassword = () => {
         {/* Back to Login */}
         <Link 
             to="/auth" 
-            className="mt-8 flex items-center gap-2 font-bold text-sm transition-all hover:-translate-x-1"
-            style={{ color: '#2D4FD6' }}
+            className="mt-8 flex items-center gap-2 font-bold text-sm transition-all hover:-translate-x-1 text-primary"
         >
             <ArrowLeft size={16} />
             Back to Login

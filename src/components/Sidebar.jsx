@@ -24,7 +24,7 @@ const Sidebar = ({ onStartFocus }) => {
               <CheckCircle2 className="text-gray-900 dark:text-white" size={28} strokeWidth={2.5} />
               <div className="absolute -bottom-1 -right-1 text-[8px] font-bold bg-white dark:bg-sidebarDark px-0.5">Vakt</div>
           </div>
-          <h1 className="text-3xl font-black text-[#0052CC] tracking-tight">Vakt</h1>
+          <h1 className="text-3xl font-black text-primary tracking-tight">Vakt</h1>
         </div>
         <p className="text-gray-400 text-sm font-medium pl-1 mt-1">Stay Disciplined</p>
       </div>
@@ -35,7 +35,7 @@ const Sidebar = ({ onStartFocus }) => {
             key={item.name}
             to={item.path}
             className={({ isActive }) => 
-              `flex items-center gap-4 px-4 py-3 rounded-full font-medium transition-all duration-200 ${isActive ? 'bg-[#7A86FF] text-white shadow-sm' : 'text-gray-500 hover:bg-gray-50 dark:hover:bg-[#2A2A2A] hover:text-gray-900 dark:hover:text-white'}`
+              `flex items-center gap-4 px-4 py-3 rounded-full font-medium transition-all duration-200 ${isActive ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:bg-gray-50 dark:hover:bg-[#2A2A2A] hover:text-gray-900 dark:hover:text-white'}`
             }
           >
             {({ isActive }) => (
@@ -51,7 +51,7 @@ const Sidebar = ({ onStartFocus }) => {
       <div className="p-6 space-y-6">
         <button 
           onClick={onStartFocus}
-          className="w-full bg-[#0052CC] hover:bg-[#0047b3] text-white rounded-full flex items-center justify-center gap-2 py-3.5 font-semibold shadow-md shadow-blue-500/20 transition-all active:scale-95"
+          className="w-full bg-primary hover:opacity-90 text-white rounded-full flex items-center justify-center gap-2 py-3.5 font-semibold shadow-md shadow-primary/20 transition-all active:scale-95"
         >
           <Timer size={18} />
           Start Focus Session

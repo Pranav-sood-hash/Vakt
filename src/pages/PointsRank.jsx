@@ -9,7 +9,7 @@ import { formatDistanceToNow, subDays, format, startOfDay } from 'date-fns';
 import TopBar from '../components/TopBar';
 
 const PointsRank = () => {
-  const { profile, pointsData, activity, tasks } = useAppContext();
+  const { profile, pointsData, activity, tasks, settings } = useAppContext();
   const rankInfo = getRankInfo(pointsData?.totalXP || 0);
 
   // Calculate Chart Data
@@ -24,10 +24,15 @@ const PointsRank = () => {
           let tasksXP = 0;
           
           activity.forEach(a => {
-              const actDate = startOfDay(new Date(a.timestamp));
-              if(actDate.getTime() === d.getTime()) {
-                  if(a.description?.toLowerCase().includes('focus')) focus += a.points;
-                  else tasksXP += a.points;
+              if (!a.timestamp) return;
+              try {
+                  const actDate = startOfDay(new Date(a.timestamp));
+                  if(actDate.getTime() === d.getTime()) {
+                      if(a.type === 'FOCUS' || a.description?.toLowerCase().includes('focus')) focus += a.points;
+                      else tasksXP += a.points;
+                  }
+              } catch (e) {
+                  console.error('Invalid activity date:', a.timestamp);
               }
           });
           
@@ -41,7 +46,7 @@ const PointsRank = () => {
       if(pts < 0) return { color: 'text-red-500', bg: 'bg-red-500/10' };
       if(desc.toLowerCase().includes('rank')) return { color: 'text-warning', bg: 'bg-warning/10' };
       if(desc.toLowerCase().includes('focus')) return { color: 'text-orange-500', bg: 'bg-orange-500/10' };
-      return { color: 'text-blue-500', bg: 'bg-blue-500/10' };
+      return { color: 'text-primary', bg: 'bg-primary/10' };
   };
 
   return (
@@ -121,7 +126,7 @@ const PointsRank = () => {
                               cursor={{fill: 'rgba(59, 91, 219, 0.05)'}}
                               contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}
                           />
-                          <Bar dataKey="tasks" name="Tasks XP" stackId="a" fill="#3B5BDB" radius={[0, 0, 4, 4]} />
+                          <Bar dataKey="tasks" name="Tasks XP" stackId="a" fill="var(--primary-color)" radius={[0, 0, 4, 4]} />
                           <Bar dataKey="focus" name="Focus XP" stackId="a" fill="#C9832A" radius={[4, 4, 0, 0]} />
                       </BarChart>
                   </ResponsiveContainer>

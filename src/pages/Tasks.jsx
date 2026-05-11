@@ -39,7 +39,7 @@ const Tasks = () => {
   const getUrgencyColor = (urgency) => {
       if(urgency === 'urgent' || urgency === 'overdue') return { bg: 'bg-red-50/60 dark:bg-red-900/10', border: 'border-red-200 dark:border-red-900/30', text: 'text-red-600', btn: 'bg-[#B91C1C] text-white', timer: 'text-red-600' };
       if(urgency === 'soon') return { bg: 'bg-[#F9F5F0] dark:bg-orange-900/10', border: 'border-[#E6D5C3] dark:border-orange-900/30', text: 'text-gray-900 dark:text-white', btn: 'bg-[#92400E] text-white', timer: 'text-[#92400E]' };
-      return { bg: 'bg-white dark:bg-cardDark', border: 'border-gray-100 dark:border-borderDark', text: 'text-gray-900 dark:text-white', btn: 'bg-gray-100 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300', timer: 'text-[#0052CC]' };
+      return { bg: 'bg-white dark:bg-cardDark', border: 'border-gray-100 dark:border-borderDark', text: 'text-gray-900 dark:text-white', btn: 'bg-gray-100 dark:bg-[#2A2A2A] text-gray-700 dark:text-gray-300', timer: 'text-primary' };
   };
 
   const filteredTasks = tasks.filter(t => {
@@ -95,10 +95,10 @@ const Tasks = () => {
           </div>
           
           <div className="flex gap-4 text-sm text-gray-500 font-medium">
-              <button onClick={() => setShowAddForm(!showAddForm)} className="flex items-center gap-1 text-[#0052CC] font-bold hover:underline">
+              <button onClick={() => setShowAddForm(!showAddForm)} className="flex items-center gap-1 text-primary font-bold hover:underline">
                   + Add Task
               </button>
-              <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#0052CC]"></div> {tasks.length} Total</div>
+              <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-primary"></div> {tasks.length} Total</div>
               <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-[#92400E]"></div> {tasks.filter(t => !t.completed && getTaskStatus(t.dueDateTime).urgency === 'soon').length} Approaching</div>
           </div>
       </div>
@@ -107,7 +107,7 @@ const Tasks = () => {
           {/* Task List */}
           <div className="flex-1 overflow-y-auto space-y-3 pr-2 hide-scrollbar pb-8">
               {showAddForm && (
-                  <form onSubmit={handleAddTask} className="p-4 bg-white dark:bg-cardDark rounded-2xl border border-[#0052CC]/30 mb-4 shadow-sm flex flex-col sm:flex-row gap-3">
+                  <form onSubmit={handleAddTask} className="p-4 bg-white dark:bg-cardDark rounded-2xl border border-primary/30 mb-4 shadow-sm flex flex-col sm:flex-row gap-3">
                       <input type="text" placeholder="Task name..." value={newTask.name} onChange={e => setNewTask({...newTask, name: e.target.value})} className="flex-1 bg-gray-50 dark:bg-[#1A1A1A] rounded-lg px-3 py-2 text-sm focus:outline-none" required />
                       <input type="time" value={newTask.dueTime} onChange={e => setNewTask({...newTask, dueTime: e.target.value})} className="bg-gray-50 dark:bg-[#1A1A1A] rounded-lg px-3 py-2 text-sm focus:outline-none" required />
                       <select value={newTask.priority} onChange={e => setNewTask({...newTask, priority: e.target.value})} className="bg-gray-50 dark:bg-[#1A1A1A] rounded-lg px-3 py-2 text-sm focus:outline-none">
@@ -115,7 +115,7 @@ const Tasks = () => {
                           <option>Medium</option>
                           <option>High</option>
                       </select>
-                      <button type="submit" className="bg-[#0052CC] text-white px-4 py-2 rounded-lg text-sm font-bold">Save</button>
+                      <button type="submit" className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold">Save</button>
                   </form>
               )}
               {filteredTasks.length === 0 ? (

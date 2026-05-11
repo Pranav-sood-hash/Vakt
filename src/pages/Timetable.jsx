@@ -30,7 +30,7 @@ const Timetable = () => {
   const getPriorityColor = (prio) => {
       if(prio === 'High') return 'bg-red-500 text-white';
       if(prio === 'Medium') return 'bg-warning text-white';
-      return 'bg-blue-400 text-white';
+      return 'bg-primary/40 text-white';
   }
 
   const handleAddTask = async (e) => {

@@ -23,8 +23,9 @@ const Dashboard = () => {
   let focusedMinutesToday = 0;
   activity.forEach(log => {
       const logDate = new Date(log.timestamp);
-      if (logDate >= todayStart && log.type === 'focus') {
-          focusedMinutesToday += log.duration || 0;
+      // Activity log type can be TASK_COMPLETE, FOCUS, ACHIEVEMENT, SECURITY
+      if (logDate >= todayStart && (log.type === 'FOCUS' || log.description?.toLowerCase().includes('focus'))) {
+          focusedMinutesToday += log.duration || 30; // Fallback to 30 if duration missing
       }
   });
 
@@ -32,7 +33,7 @@ const Dashboard = () => {
   const percentCompleted = dailyGoalMinutes === 0 ? 0 : Math.min(100, Math.round((focusedMinutesToday / dailyGoalMinutes) * 100));
 
   const getDisciplineLevel = () => {
-      if(percentCompleted >= 80) return { label: 'High', color: 'text-[#0052CC]', bar: 'bg-[#0052CC]' };
+      if(percentCompleted >= 80) return { label: 'High', color: 'text-primary', bar: 'bg-primary' };
       if(percentCompleted >= 40) return { label: 'Medium', color: 'text-warning', bar: 'bg-warning' };
       return { label: 'Low', color: 'text-red-500', bar: 'bg-red-500' };
   };
@@ -148,7 +149,7 @@ const Dashboard = () => {
                     <div>
                         <p className="font-medium text-sm">{task.name}</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {task.dueDateTime ? format(new Date(task.dueDateTime), 'hh:mm a') : 'No time'}
+                            {task.dueDateTime ? (function(){ try { return format(new Date(task.dueDateTime), 'hh:mm a'); } catch { return 'Invalid Date'; } })() : 'No time'}
                         </p>
                     </div>
                     </div>

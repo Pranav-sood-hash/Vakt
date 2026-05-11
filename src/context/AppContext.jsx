@@ -49,10 +49,38 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // Sync dark mode on mount
+  const applyAccentColor = (color) => {
+    if (color) {
+      const id = 'vakt-dynamic-theme';
+      let style = document.getElementById(id);
+      if (!style) {
+        style = document.createElement('style');
+        style.id = id;
+        document.head.appendChild(style);
+      }
+      
+      const r = parseInt(color.slice(1, 3), 16);
+      const g = parseInt(color.slice(3, 5), 16);
+      const b = parseInt(color.slice(5, 7), 16);
+      const rgb = !isNaN(r) && !isNaN(g) && !isNaN(b) ? `${r} ${g} ${b}` : '45 79 214';
+
+      style.innerHTML = `
+        :root {
+          --primary-color: ${color} !important;
+          --primary-color-rgb: ${rgb} !important;
+        }
+      `;
+    }
+  };
+
+  // Sync theme on mount and when settings change
   useEffect(() => {
     applyDarkMode(settings.darkMode);
-  }, []);
+  }, [settings.darkMode]);
+
+  useEffect(() => {
+    applyAccentColor(settings.accentColor);
+  }, [settings.accentColor]);
 
   // ─── Load all data after auth ────────────────────────────────────────────────
   const loadAll = useCallback(async () => {
@@ -112,6 +140,7 @@ export const AppProvider = ({ children }) => {
       const merged = { ...defaultSettings, ...s };
       setSettings(merged);
       applyDarkMode(merged.darkMode);
+      applyAccentColor(merged.accentColor);
 
       const rawNotifs = notifRes?.data?.data || [];
       setNotifications(rawNotifs.map(n => ({
@@ -126,10 +155,12 @@ export const AppProvider = ({ children }) => {
       const rawActivity = activityRes?.data?.data || [];
       setActivity(rawActivity.map(a => ({
         id: a.id,
+        type: a.type,
         description: a.title,
         points: a.xpDelta,
         timestamp: a.createdAt,
       })));
+      console.log('App Data Loaded:', { profile: u.username, settings: merged });
     } catch (err) {
       console.error('Failed to load data:', err);
     } finally {
@@ -151,6 +182,7 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('vakt_access_token', accessToken);
     localStorage.setItem('vakt_refresh_token', refreshToken);
     setIsAuthenticated(true);
+    if (s?.accentColor) applyAccentColor(s.accentColor);
     return true;
   };
 
@@ -185,13 +217,24 @@ export const AppProvider = ({ children }) => {
     const updated = { ...settings, darkMode: next };
     setSettings(updated);
     applyDarkMode(next);
-    try { await api.patch('/settings', { darkMode: next }); } catch {}
+    try { 
+      await api.patch('/settings', { darkMode: next }); 
+      console.log('Dark mode saved to server:', next);
+    } catch (err) {
+      console.error('Failed to save dark mode:', err);
+    }
   };
 
   const updateSettingKey = async (key, value) => {
     const updated = { ...settings, [key]: value };
     setSettings(updated);
-    try { await api.patch('/settings', { [key]: value }); } catch {}
+    if (key === 'accentColor') applyAccentColor(value);
+    try { 
+      await api.patch('/settings', { [key]: value }); 
+      console.log(`Setting ${key} saved:`, value);
+    } catch (err) {
+      console.error(`Failed to save setting ${key}:`, err);
+    }
   };
 
   // ─── Tasks ───────────────────────────────────────────────────────────────────

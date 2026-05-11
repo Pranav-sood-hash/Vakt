@@ -68,7 +68,7 @@ const Settings = () => {
                           <div className="text-sm text-gray-500">Choose your primary theme color</div>
                       </div>
                       <div className="flex gap-3">
-                          {['#3B5BDB', '#10B981', '#F59E0B', '#EF4444'].map(color => (
+                          {['#2D4FD6', '#3B5BDB', '#10B981', '#F59E0B', '#EF4444'].map(color => (
                               <button
                                   key={color}
                                   onClick={() => updateSettingKey('accentColor', color)}
